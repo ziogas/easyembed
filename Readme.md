@@ -98,10 +98,10 @@ All the controller actions must have "_action" suffix.
 
 **Controllers**
 
-All the app controllers should be on app/controllers directory. Their name and file must have "_controller" suffix. Framework call's them with EE::controller() method help. There are no other restrictions to controlers in general.
+All the app controllers should be on app/controllers directory. Their name and file must have "_controller" suffix. Framework calls them with EE::controller() method help. There are no other restrictions to controllers in general.
 
 ```php
-<?php                                                                                                                                                                                                
+<?php
 
 /*
  * Sample test controller
@@ -110,7 +110,7 @@ class test_controller
 {
     public function __construct ()
     {
-        //$this -> model = EE::model ( 'test' );
+        $this -> model = EE::model ( 'test' );
     }
 
     /*
@@ -131,16 +131,21 @@ class test_controller
 
 **Models**
 
-All the app models should be on app/models directory. Their name and file must have "_model" suffix. Framework call's them with EE::model() method help. Almost everytime it's useful to define pdo object in model constructor 
+All the app models should be on app/models directory. Their name and file must have "_model" suffix. Framework calls them with EE::model() method help. Almost everytime it's useful to define pdo object in model constructor 
 ```php
+<?php
+
+/*
+ * Sample test model
+ */
 class test_model
 { 
     private $pdo;
  
     public function __construct ()
-    {   
+    {
         $this -> pdo = db_pdo::load ( 'main' );
-    }   
+    }
 }
 ```
 
@@ -152,9 +157,9 @@ By default EE uses no 3rd party templating system and emphasis PHP itself as a t
 
 ```php
 public function foo_action ( $path )
-{   
+{
     $id = ( isset ( $path [ 0 ] ) ) ? $path [ 0 ] : null;
- 
+
     EE::set ( 'id', $id );
     return EE::view ( 'test' );
 }
@@ -195,7 +200,7 @@ Installation
 --------------
 
 ```sh
-* Clone repository: 
+* Clone repository:
   git clone git://github.com/ziogas/easyembed.git ee
 * Modify /ee/.htacess /ee/app/config.php and /ee/app/routes.php files according to your setup. Almost every time you need edit just base_path and database credentials.
 * Run code in browser
