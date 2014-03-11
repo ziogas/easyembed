@@ -78,11 +78,11 @@ EE::init ();
 EE::load_page ();
 ```
 
-** Global variables **
+**Global variables**
 
 EE have some specific methods to hold global variables. Those are accessed from EE::get, EE::get_ref and setted via EE::set methods. Those variables are also used when parsing views.
 
-** Page loading **
+**Page loading**
 
 When calling load_page method it requests routing function and either returns output either prints it directly.
 Routes are defined with regular expressions help in app/routes.php file. Route config must point to controller and may be pointing to specific action (method). Some examples:
@@ -96,7 +96,7 @@ Routes are defined with regular expressions help in app/routes.php file. Route c
 ```
 All the controller actions must have "_action" suffix.
 
-** Controllers **
+**Controllers**
 
 All the app controllers should be on app/controllers directory. Their name and file must have "_controller" suffix. Framework call's them with EE::controller() method help. There are no other restrictions to controlers in general.
 
@@ -129,7 +129,7 @@ class test_controller
 }
 ```
 
-** Models **
+**Models**
 
 All the app models should be on app/models directory. Their name and file must have "_model" suffix. Framework call's them with EE::model() method help. Almost everytime it's useful to define pdo object in model constructor 
 ```php
@@ -146,7 +146,7 @@ class test_model
 
 There are no other restrictions to models in general.
 
-** Views **
+**Views**
 
 By default EE uses no 3rd party templating system and emphasis PHP itself as a templating engine. Therefore with the help of [Shorttags] and [Alternative syntax for control structures] it works nice by default. Views are rendered with EE::view() method by passing file and additional variables. Also in views are extracted all the global variables.
 
@@ -162,15 +162,15 @@ public function foo_action ( $path )
 
 All the app views should be on app/views directory. Their file must have "_view" suffix
 
-** Assets **
+**Assets**
 
 Assets are every static content like css, js or images. By default they are in app/assets directory and Apache mod rewrite or nginx rules makes them accessible via /assets path.
 
-** Libs **
+**Libs**
 
 All custom framework libraries are located in libs directory. Right now there are helpers for pdo, session initialization and locale translations.
 
-** Tests **
+**Tests**
 
 Framework tests are located in tests directory and app tests should be on app/tests. They should be PHPUnit compatible and can be executed by cli helper. Just run 
 
@@ -181,7 +181,7 @@ OR
 ```
 Framework tests can be invoked via test_framework helper.
 
-** URL **
+**URL**
 
 There are EE::url() method which prepends base_path for every url to work correctly.
 ```php
@@ -196,7 +196,7 @@ Installation
 
 ```sh
 * Clone repository: 
-  git clone  git://github.com/ziogas/easyembed.git
+  git clone git://github.com/ziogas/easyembed.git ee
 * Modify /ee/.htacess /ee/app/config.php and /ee/app/routes.php files according to your setup. Almost every time you need edit just base_path and database credentials.
 * Run code in browser
 ```
