@@ -1,0 +1,32 @@
+#!/bin/sh
+# Several useful utils
+
+SCRIPT=`readlink -e $0`
+DIR=`dirname $SCRIPT`
+
+echo $DIR
+
+do_test() {
+    $DIR/libs/phpunit.phar --bootstrap $DIR/ee.php --colors --verbose $1
+}
+
+case "$1" in
+    test_framework)
+        do_test $DIR/tests
+        exit 1
+        ;;
+    test_app)
+        do_test $DIR/app/tests
+        exit 1
+        ;;
+    test)
+        do_test $2
+        exit 1
+        ;;
+    *)
+        echo "Usage: $SCRIPT {test_framework|test_app|test}" >&2
+        exit 1
+        ;;
+esac
+
+exit 0

@@ -1,0 +1,15 @@
+RewriteEngine On
+
+# Change this to your path, include leading and trailing slashes
+RewriteBase /ee/
+
+# Rewrite all the assets to assets path
+RewriteRule ^assets/(.*)$ app/assets/$1 [PT]
+
+# Prevent direct access of libs and app stuff
+RewriteRule ^(?:libs|cli|app/(?:controllers|models|views|tests|routes.php|config.php))\b.* index.php/$0 [PT]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule .* index.php/$0 [PT]
