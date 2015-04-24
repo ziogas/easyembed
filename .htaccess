@@ -7,7 +7,7 @@ RewriteBase /ee/
 RewriteRule ^assets/(.*)$ app/assets/$1 [PT]
 
 # Prevent direct access of libs and app stuff
-RewriteRule ^(?:libs|cli|app/(?:controllers|models|views|tests|routes.php|config.php))\b.* index.php/$0 [PT]
+RewriteRule ^(?:libs|app/(?:controllers|models|views|tests|routes.php|config.php)|cli|.htaccess)\b.* index.php/$0 [PT]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
