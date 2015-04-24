@@ -150,6 +150,24 @@ if ( !class_exists ( 'EE' ) )
             {
                 require ( self::$dir .'/'. self::APP_MODELS_DIR .'/'. $classname .'.php' );
             }
+            elseif ( substr ( $classname, 0, 5 ) === 'Zend_' )
+            {
+                $classname = str_replace ( '_', '/', substr ( $classname, 5 ) );
+                if ( file_exists ( self::$dir .'/'. self::APP_LIBS_DIR .'/Zend/'. $classname .'.php' ) )
+                {
+                    $current_dir = getcwd ();
+                    chdir ( self::$dir .'/'. self::APP_LIBS_DIR );
+                    require ( self::$dir .'/'. self::APP_LIBS_DIR .'/Zend/'. $classname .'.php' );
+                    chdir ( $current_dir );
+                }
+                elseif ( file_exists ( self::$dir .'/'. self::LIBS_DIR .'/Zend/'. $classname .'.php' ) )
+                {
+                    $current_dir = getcwd ();
+                    chdir ( self::$dir .'/'. self::LIBS_DIR );
+                    require ( self::$dir .'/'. self::LIBS_DIR .'/Zend/'. $classname .'.php' );
+                    chdir ( $current_dir );
+                }
+            }
             elseif ( file_exists ( self::$dir .'/'. self::APP_LIBS_DIR .'/'. $classname .'.php' ) )
             {
                 require ( self::$dir .'/'. self::APP_LIBS_DIR .'/'. $classname .'.php' );
