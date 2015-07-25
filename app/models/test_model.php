@@ -4,12 +4,11 @@
  * Sample test model.
  * Loads pdo with main database config.
  */
-class test_model
+class test_model extends base_model
 {
-    private $pdo;
-
     public function __construct ()
     {
-        $this -> pdo = db_pdo::load ( 'main' );
+        parent::__construct();
+        //$this->set_table('test');
     }
 }
