@@ -616,4 +616,9 @@ if ( !class_exists ( 'EE' ) )
     }
 
     spl_autoload_register ( array ( 'EE', 'autoload' ) );
+
+    if ( file_exists ( dirname ( __FILE__ ).'/vendor/autoload.php' ) )
+    {
+        require dirname ( __FILE__ ).'/vendor/autoload.php';
+    }
 }
