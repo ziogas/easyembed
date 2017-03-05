@@ -3,9 +3,9 @@
 /**
  * Loads translation from app/translations/LOCALE.php file
  *
- * $phrase = locale::translate('key');
+ * $phrase = lang::translate('key');
  */
-class locale
+class lang
 {
     private static $translations = null;
 
