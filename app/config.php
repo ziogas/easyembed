@@ -4,14 +4,12 @@
  * Main config place.
  * Use whatever logic you want as long as it returns array.
  */
-$config = array
-(
+$config = array(
     'error_level' => E_ALL,
-    'log_errors' => false,
+    'log_errors' => true,
     'timezone' => 'Europe/London',
     'locale' => 'en_US',
-    'session' => array
-    (
+    'session' => array(
         'name' => 'session',
         'auto_start' => 0,
         'gc_maxlifetime' => 21600,
@@ -22,10 +20,8 @@ $config = array
         'save_handler' => 'memcached',
         'save_path' => '127.0.0.1:11211',
     ),
-    'databases' => array
-    (
-        'main' => array
-        (
+    'databases' => array(
+        'main' => array(
             'dsn' => 'mysql:host=localhost;dbname=test',
             'username' => 'root',
             'password' => '',
@@ -35,28 +31,27 @@ $config = array
             'dsn' => 'mysql:host=localhost;dbname=test',
             'username' => 'root',
             'password' => '',
-            'params' => array ( PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'", PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION ),
+            'params' => array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'", PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION),
 */
 /*
             // Sqlite setup example
             'dsn' => 'sqlite:/home/user/test.sq3',
-            'params' => array ( PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION ),
+            'params' => array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION),
 */
 /*
             // Pgsql setup example
             'dsn' => 'pgsql:host=localhost;dbname=test;user=user;password=password',
-            'params' => array ( PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION ),
+            'params' => array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION),
 */
         ),
     ),
 );
 
 // Some specific rule to define current enviroment. Can be anything and not only dev or prod
-$enviroment = ( isset ( $_SERVER [ 'HTTP_HOST' ] ) && $_SERVER [ 'HTTP_HOST' ] == 'localhost' ) ? 'dev' : 'prod';
+$enviroment = (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == 'localhost') ? 'dev' : 'prod';
 
-if ( $enviroment == 'prod' )
-{
-    $config [ 'log_errors' ] = true;
+if ($enviroment == 'prod') {
+    $config['log_errors'] = true;
 }
 
 return $config;

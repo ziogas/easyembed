@@ -10,12 +10,12 @@
  */
 class exampleTest extends PHPUnit_Framework_TestCase
 {
-    public function __construct ()
+    public function __construct()
     {
     }
 
-    public function testStuff ()
+    public function testStuff()
     {
-        $this -> assertSame ( 'Stuff', 'Stuff' );
+        $this->assertSame('Stuff', 'Stuff');
     }
 }

@@ -25,12 +25,11 @@
  * Requirements: PHP >= 5.1.3, PDO for database usage. Also if you want to use unit testing you'll need PHP >= 5.3.
  * License: MIT
  * Source: http://github.com/ziogas/easyembed.git
- * Author: Arminas Žukauskas
+ * Author: Arminas Žukauskas - arminas@ini.lt
  */
 
-//Failsafe check
-if ( !class_exists ( 'EE' ) )
-{
+// Failsafe check
+if (!class_exists('EE')) {
     class EE
     {
         // Directory where the app lives
@@ -61,17 +60,17 @@ if ( !class_exists ( 'EE' ) )
         const LIBS_DIR = 'libs';
 
         // on init () this will be current directory
-        private static $dir = false,
+        public static $dir = false,
                        // variables holder
-                       $variables = array (),
+                       $variables = array(),
                        // config holder
-                       $config = array (),
+                       $config = array(),
                        // main routes holder
-                       $routes = array (),
+                       $routes = array(),
                        // model instances holder
-                       $models = array (),
+                       $models = array(),
                        // controller instances holder
-                       $controllers = array ();
+                       $controllers = array();
 
         /*
          * Main initialization method.
@@ -83,53 +82,44 @@ if ( !class_exists ( 'EE' ) )
          *
          * return boolean
          */
-        public static function init ( $config = null, $routes = null )
+        public static function init($config = null, $routes = null)
         {
             // Set current directory for correct app includes
-            self::$dir = dirname ( __FILE__ );
-            EE::set ( '_dir', self::$dir );
+            self::$dir = dirname(__FILE__);
+            EE::set('_dir', self::$dir);
 
             // Use provided or load config from file
-            if ( !is_null ( $config ) )
-            {
+            if (!is_null($config)) {
                 self::$config = $config;
-            }
-            else
-            {
-                self::$config = require ( self::$dir .'/'. self::APP_CONFIG );
+            } else {
+                self::$config = require(self::$dir.'/'.self::APP_CONFIG);
             }
 
-            EE::set ( '_config', self::$config );
+            EE::set('_config', self::$config);
 
             // Define error level
-            if ( isset ( self::$config [ 'error_level' ] ) )
-            {
-                error_reporting ( self::$config [ 'error_level' ] );
+            if (isset(self::$config['error_level'])) {
+                error_reporting(self::$config['error_level']);
             }
 
             // Define whenever to log errors
-            if ( isset ( self::$config [ 'log_errors' ] ) )
-            {
-                ini_set ( 'log_errors', self::$config [ 'log_errors' ] );
+            if (isset(self::$config['log_errors'])) {
+                ini_set('log_errors', self::$config['log_errors']);
             }
 
             // Define timezone
-            if ( isset ( self::$config [ 'timezone' ] ) )
-            {
-                date_default_timezone_set ( self::$config [ 'timezone' ] );
+            if (isset(self::$config['timezone'])) {
+                date_default_timezone_set(self::$config['timezone']);
             }
 
             // Use provided or load routes file
-            if ( !is_null ( $routes ) )
-            {
+            if (!is_null($routes)) {
                 self::$routes = $routes;
-            }
-            else
-            {
-                self::$routes = require ( self::$dir .'/'. self::APP_ROUTES );
+            } else {
+                self::$routes = require(self::$dir.'/'.self::APP_ROUTES);
             }
 
-            EE::set ( '_routes', self::$routes );
+            EE::set('_routes', self::$routes);
 
             // Everything went fine
             return true;
@@ -140,41 +130,29 @@ if ( !class_exists ( 'EE' ) )
          *
          * @param string $classname Classname to load
          */
-        public static function autoload ( $classname )
+        public static function autoload($classname)
         {
-            if ( substr ( $classname, -11 ) === '_controller' )
-            {
-                require ( self::$dir .'/'. self::APP_CONTROLLERS_DIR .'/'. $classname .'.php' );
-            }
-            elseif ( substr ( $classname, -6 ) === '_model' )
-            {
-                require ( self::$dir .'/'. self::APP_MODELS_DIR .'/'. $classname .'.php' );
-            }
-            elseif ( substr ( $classname, 0, 5 ) === 'Zend_' )
-            {
-                $classname = str_replace ( '_', '/', substr ( $classname, 5 ) );
-                if ( file_exists ( self::$dir .'/'. self::APP_LIBS_DIR .'/Zend/'. $classname .'.php' ) )
-                {
-                    $current_dir = getcwd ();
-                    chdir ( self::$dir .'/'. self::APP_LIBS_DIR );
-                    require ( self::$dir .'/'. self::APP_LIBS_DIR .'/Zend/'. $classname .'.php' );
-                    chdir ( $current_dir );
+            if (substr($classname, -11) === '_controller') {
+                require(self::$dir .'/'. self::APP_CONTROLLERS_DIR .'/'. $classname .'.php');
+            } elseif (substr($classname, -6) === '_model') {
+                require(self::$dir .'/'. self::APP_MODELS_DIR .'/'. $classname .'.php');
+            } elseif (substr($classname, 0, 5) === 'Zend_') {
+                $classname = str_replace('_', '/', substr($classname, 5));
+                if (file_exists(self::$dir .'/'. self::APP_LIBS_DIR .'/Zend/'. $classname .'.php')) {
+                    $current_dir = getcwd();
+                    chdir(self::$dir .'/'. self::APP_LIBS_DIR);
+                    require(self::$dir .'/'. self::APP_LIBS_DIR .'/Zend/'. $classname .'.php');
+                    chdir($current_dir);
+                } elseif (file_exists(self::$dir .'/'. self::LIBS_DIR .'/Zend/'. $classname .'.php')) {
+                    $current_dir = getcwd();
+                    chdir(self::$dir .'/'. self::LIBS_DIR);
+                    require(self::$dir .'/'. self::LIBS_DIR .'/Zend/'. $classname .'.php');
+                    chdir($current_dir);
                 }
-                elseif ( file_exists ( self::$dir .'/'. self::LIBS_DIR .'/Zend/'. $classname .'.php' ) )
-                {
-                    $current_dir = getcwd ();
-                    chdir ( self::$dir .'/'. self::LIBS_DIR );
-                    require ( self::$dir .'/'. self::LIBS_DIR .'/Zend/'. $classname .'.php' );
-                    chdir ( $current_dir );
-                }
-            }
-            elseif ( file_exists ( self::$dir .'/'. self::APP_LIBS_DIR .'/'. $classname .'.php' ) )
-            {
-                require ( self::$dir .'/'. self::APP_LIBS_DIR .'/'. $classname .'.php' );
-            }
-            elseif ( file_exists ( self::$dir .'/'. self::LIBS_DIR .'/'. $classname .'.php' ) )
-            {
-                require ( self::$dir .'/'. self::LIBS_DIR .'/'. $classname .'.php' );
+            } elseif (file_exists(self::$dir .'/'. self::APP_LIBS_DIR .'/'. $classname .'.php')) {
+                require(self::$dir .'/'. self::APP_LIBS_DIR .'/'. $classname .'.php');
+            } elseif (file_exists(self::$dir .'/'. self::LIBS_DIR .'/'. $classname .'.php')) {
+                require(self::$dir .'/'. self::LIBS_DIR .'/'. $classname .'.php');
             }
         }
 
@@ -185,61 +163,51 @@ if ( !class_exists ( 'EE' ) )
          *
          * return string|boolean
          */
-        public static function load_page ( $print_output = true, $uri = null )
+        public static function load_page($print_output = true, $uri = null)
         {
-            if ( is_null ( $uri ) )
-            {
+            if (is_null($uri)) {
                 $uri = false;
 
                 // First try to get correct uri from request_uri
-                if ( isset ( $_SERVER [ 'REQUEST_URI' ] ) )
-                {
-                    $qpos = strpos ( $_SERVER [ 'REQUEST_URI' ], '?' );
-                    $uri = $qpos ? substr ( $_SERVER [ 'REQUEST_URI' ], 0, $qpos ) : $_SERVER [ 'REQUEST_URI' ];
+                if (isset($_SERVER['REQUEST_URI'])) {
+                    $qpos = strpos($_SERVER['REQUEST_URI'], '?');
+                    $uri = $qpos ? substr($_SERVER['REQUEST_URI'], 0, $qpos) : $_SERVER['REQUEST_URI'];
                 }
                 // Fallback to path_info
-                elseif ( isset ( $_SERVER [ 'PATH_INFO' ] ) )
-                {
-                    $uri = $_SERVER [ 'PATH_INFO' ];
+                elseif (isset($_SERVER['PATH_INFO'])) {
+                    $uri = $_SERVER['PATH_INFO'];
                 }
             }
 
             // Bad request was made
-            if ( !$uri || ( !empty ( self::$routes [ 'base_path' ] ) && strpos ( $uri, self::$routes [ 'base_path' ] ) !== 0 ) )
-            {
-                return self::error_page ( 400, null, $print_output );
+            if (!$uri || (!empty(self::$routes['base_path']) && strpos($uri, self::$routes['base_path']) !== 0)) {
+                return self::error_page(400, null, $print_output);
             }
 
-            list ( $handler, $matches ) = self::route ( $uri );
+            list($handler, $matches) = self::route($uri);
 
             // No handler match
-            if ( !$handler )
-            {
-                return self::error_page ( 404, null, $print_output );
+            if (!$handler) {
+                return self::error_page(404, null, $print_output);
             }
 
-            if ( $matches )
-            {
+            if ($matches) {
                 // Remove array 0th item from preg match
-                array_shift ( $matches );
+                array_shift($matches);
 
                 // If we have simple match then explode by slashes
-                if ( sizeof ( $matches ) === 1 )
-                {
-                    $matches = explode ( '/', $matches [ 0 ] );
+                if (sizeof($matches) === 1) {
+                    $matches = explode('/', $matches[0]);
                 }
             }
 
-            if ( $print_output )
-            {
-                self::load_app ( $handler, $matches, $print_output );
-            }
-            else
-            {
-                ob_start ();
+            if ($print_output) {
+                self::load_app($handler, $matches, $print_output);
+            } else {
+                ob_start();
 
-                self::load_app ( $handler, $matches, $print_output );
-                return ob_get_clean ();
+                self::load_app($handler, $matches, $print_output);
+                return ob_get_clean();
             }
         }
 
@@ -251,45 +219,37 @@ if ( !class_exists ( 'EE' ) )
          *
          * return array
          */
-        public static function route ( $uri, $routes = null )
+        public static function route($uri, $routes = null)
         {
-            if ( is_null ( $routes ) )
-            {
+            if (is_null($routes)) {
                 $routes = self::$routes;
             }
 
             // Strip base path from url
-            $relative_uri = substr ( $uri, strlen ( $routes [ 'base_path' ] ) );
+            $relative_uri = substr($uri, strlen($routes['base_path']));
 
             $matched_handler = $matched_matches = null;
 
             // Try to discover needed route
-            if ( isset ( $routes [ 'routes' ] ) && sizeof ( $routes [ 'routes' ] ) )
-            {
+            if (isset($routes['routes']) && sizeof($routes['routes'])) {
                 // Just a simple lookup
-                if ( isset ( $routes [ 'routes' ] [ $relative_uri ] ) )
-                {
-                    $matched_handler = $routes [ 'routes' ] [ $relative_uri ];
-                }
-                else
-                {
+                if (isset($routes['routes'][$relative_uri])) {
+                    $matched_handler = $routes['routes'][$relative_uri];
+                } else {
                     // Replace tokens
-                    $regex_tokens = array
-                    (
+                    $regex_tokens = array(
                         ':any' => '(.*)',
                         ':string' => '([a-zA-Z]+)',
                         ':num' => '([0-9]+)',
                         ':alpha' => '([a-zA-Z0-9\-_]+)',
                     );
 
-                    $regex_keys = array_keys ( $regex_tokens );
+                    $regex_keys = array_keys($regex_tokens);
 
-                    foreach ( $routes [ 'routes' ] as $route_config => $handler )
-                    {
-                        $route_config = str_replace ( $regex_keys, $regex_tokens, $route_config );
+                    foreach ($routes [ 'routes' ] as $route_config => $handler) {
+                        $route_config = str_replace($regex_keys, $regex_tokens, $route_config);
 
-                        if ( preg_match ( '#^'. preg_quote ( $routes [ 'base_path' ], '#' ) . $route_config .'$#i', $uri, $matches ) )
-                        {
+                        if (preg_match('#^'. preg_quote($routes['base_path'], '#') . $route_config .'$#i', $uri, $matches)) {
                             $matched_handler = $handler;
                             $matched_matches = $matches;
 
@@ -299,12 +259,11 @@ if ( !class_exists ( 'EE' ) )
                 }
             }
 
-            if ( sizeof ( $matched_matches ) > 1 && end ( $matched_matches ) === '' )
-            {
-                array_pop ( $matched_matches );
+            if (sizeof($matched_matches) > 1 && end($matched_matches) === '') {
+                array_pop($matched_matches);
             }
 
-            return array ( $matched_handler, $matched_matches );
+            return array($matched_handler, $matched_matches);
         }
 
         /**
@@ -316,39 +275,31 @@ if ( !class_exists ( 'EE' ) )
          *
          * return void
          */
-        public static function load_app ( $handler, $matches, $print_output )
+        public static function load_app($handler, $matches, $print_output)
         {
-            if ( !isset ( $handler [ 'controller' ] ) )
-            {
-                return self::error_page ( 500, null, true );
+            if (!isset($handler['controller'])) {
+                return self::error_page(500, null, true);
             }
 
-            $controller = EE::controller ( $handler [ 'controller' ] );
+            $controller = EE::controller($handler['controller']);
 
-            if ( isset ( $handler [ 'action' ] ) )
-            {
-                $action = $handler [ 'action' ];
-            }
-            else
-            {
-                if ( isset ( $matches [ 0 ] ) && !empty ( $matches [ 0 ] ) )
-                {
-                    $action = strtolower ( array_shift ( $matches ) );
-                }
-                else
-                {
+            if (isset($handler['action'])) {
+                $action = $handler['action'];
+            } else {
+                if (isset($matches[0]) && !empty($matches[0])) {
+                    $action = strtolower(array_shift($matches));
+                } else {
                     $action = 'index';
                 }
             }
 
             $action .= '_action';
 
-            if ( !method_exists ( $controller, $action ) )
-            {
-                return self::error_page ( 404, null, true );
+            if (!method_exists($controller, $action)) {
+                return self::error_page(404, null, true);
             }
 
-            $controller -> $action ( $matches );
+            $controller->$action($matches);
         }
 
         /*
@@ -360,18 +311,17 @@ if ( !class_exists ( 'EE' ) )
          *
          * return mixed
          */
-        public static function model ( $name, $args = null, $overwrite = false )
+        public static function model($name, $args = null, $overwrite = false)
         {
-            if ( isset ( self::$models [ $name ] ) && self::$models [ $name ] && !$overwrite )
-            {
-                return self::$models [ $name ];
+            if (isset(self::$models[$name]) && self::$models[$name] && !$overwrite) {
+                return self::$models[$name];
             }
 
             $classname = $name .'_model';
 
-            self::$models [ $name ] = new $classname ( $args );
+            self::$models[$name] = new $classname ($args);
 
-            return self::$models [ $name ];
+            return self::$models[$name];
         }
 
         /*
@@ -383,18 +333,17 @@ if ( !class_exists ( 'EE' ) )
          *
          * return mixed
          */
-        public static function controller ( $name, $args = null, $overwrite = false )
+        public static function controller($name, $args = null, $overwrite = false)
         {
-            if ( isset ( self::$controllers [ $name ] ) && self::$controllers [ $name ] && !$overwrite )
-            {
-                return self::$controllers [ $name ];
+            if (isset(self::$controllers[$name]) && self::$controllers[$name] && !$overwrite) {
+                return self::$controllers[$name];
             }
 
             $classname = $name .'_controller';
 
-            self::$controllers [ $name ] = new $classname ( $args );
+            self::$controllers[$name] = new $classname($args);
 
-            return self::$controllers [ $name ];
+            return self::$controllers[$name];
         }
 
         /*
@@ -403,25 +352,24 @@ if ( !class_exists ( 'EE' ) )
          * @param string $name View name
          * @param array|null $args Additional arguments
          */
-        public static function view ( $name, $args = null )
+        public static function view($name, $args = null)
         {
-            $global_args = EE::get ();
+            $global_args = EE::get();
 
-            if ( is_array ( $args ) && sizeof ( $args ) )
-            {
-                $global_args = array_merge ( $global_args, $args );
+            if (is_array($args) && sizeof($args)) {
+                $global_args = array_merge($global_args, $args);
             }
 
-            extract ( $global_args );
-            require ( self::$dir .'/'. self::APP_VIEWS_DIR .'/'. $name .'_view.php' );
+            extract($global_args);
+            require(self::$dir .'/'. self::APP_VIEWS_DIR .'/'. $name .'_view.php');
         }
 
         /**
          * Method to correctly format app url
          */
-        public static function url ( $url )
+        public static function url($url)
         {
-            return self::$routes [ 'base_path' ] .'/'. ltrim ( $url, '/' );
+            return self::$routes['base_path'] .'/'. ltrim($url, '/');
         }
 
         /**
@@ -433,10 +381,9 @@ if ( !class_exists ( 'EE' ) )
          *
          * return string|boolean
          */
-        public static function error_page ( $status = 500, $err_msg = null, $print_output = true )
+        public static function error_page($status = 500, $err_msg = null, $print_output = true)
         {
-            $status_msg = array
-            (
+            $status_msg = array(
                 400 => 'Bad Request',
                 403 => 'Forbidden',
                 404 => 'Not Found',
@@ -444,15 +391,13 @@ if ( !class_exists ( 'EE' ) )
                 503 => 'Service Unavailable',
             );
 
-            if ( PHP_SAPI !== 'cli' )
-            {
-                header ( 'HTTP/1.1 '. $status . $status_msg [ $status ] );
+            if (PHP_SAPI !== 'cli') {
+                header('HTTP/1.1 '. $status . $status_msg[$status]);
             }
 
-            $message = ( $err_msg ? $err_msg : $status_msg [ $status ] );
+            $message = ($err_msg ? $err_msg : $status_msg[$status]);
 
-            if ( $print_output )
-            {
+            if ($print_output) {
                 echo $message;
                 return true;
             }
@@ -469,18 +414,16 @@ if ( !class_exists ( 'EE' ) )
          *
          * return boolean
          */
-        public static function set ()
+        public static function set()
         {
-            $args = func_get_args ();
-            $value = array_pop ( $args );
+            $args = func_get_args();
+            $value = array_pop($args);
 
             $vars = &self::$variables;
 
-            if ( sizeof ( $args ) )
-            {
-                foreach ( $args as $arg )
-                {
-                    $vars = &$vars [ $arg ];
+            if (sizeof($args)) {
+                foreach ($args as $arg) {
+                    $vars = &$vars[$arg];
                 }
 
                 $vars = $value;
@@ -498,19 +441,15 @@ if ( !class_exists ( 'EE' ) )
          *
          * return mixed
          */
-        public static function get ()
+        public static function get()
         {
-            $args = func_get_args ();
+            $args = func_get_args();
             $vars = self::$variables;
 
-            foreach ( $args as $arg )
-            {
-                if ( isset ( $vars [ $arg ] ) )
-                {
-                    $vars = $vars [ $arg ];
-                }
-                else
-                {
+            foreach ($args as $arg) {
+                if (isset($vars[$arg])) {
+                    $vars = $vars[$arg];
+                } else {
                     $vars = null;
                     break;
                 }
@@ -526,15 +465,14 @@ if ( !class_exists ( 'EE' ) )
          *
          * return mixed
          */
-        public static function &get_ref ()
+        public static function &get_ref()
         {
-            $args = func_get_args ();
+            $args = func_get_args();
 
             $vars = &self::$variables;
 
-            foreach ( $args as $arg )
-            {
-                $vars = &$vars [ $arg ];
+            foreach ($args as $arg) {
+                $vars = &$vars[$arg];
             }
 
             return $vars;
@@ -547,15 +485,16 @@ if ( !class_exists ( 'EE' ) )
          *
          * return boolean
          */
-        public static function is_set ()
+        public static function is_set()
         {
-            $args = func_get_args ();
+            $args = func_get_args();
             $vars = self::$variables;
 
-            foreach ( $args as $arg )
-            {
-                if ( !isset ( $vars [ $arg ] ) ) return false;
-                $vars = $vars [ $arg ];
+            foreach ($args as $arg) {
+                if (!isset($vars[$arg])) {
+                    return false;
+                }
+                $vars = $vars[$arg];
             }
 
             return true;
@@ -569,33 +508,28 @@ if ( !class_exists ( 'EE' ) )
          *
          * return boolean
          */
-        public static function un_set ()
+        public static function un_set()
         {
-            $args = func_get_args ();
+            $args = func_get_args();
 
-            if ( sizeof ( $args ) > 1 )
-            {
-                $element = array_pop ( $args );
+            if (sizeof($args) > 1) {
+                $element = array_pop($args);
 
                 $vars = &self::$variables;
 
-                foreach ( $args as $arg )
-                {
-                    $vars = &$vars [ $arg ];
+                foreach ($args as $arg) {
+                    $vars = &$vars[$arg];
                 }
 
-                if ( is_array ( $vars ) )
-                {
-                    unset ( $vars [ $element ] );
+                if (is_array($vars)) {
+                    unset($vars[$element]);
 
                     return true;
                 }
 
                 return false;
-            }
-            else
-            {
-                unset ( self::$variables [ $args [ 0 ] ] );
+            } else {
+                unset(self::$variables[$args[0]]);
 
                 return true;
             }
@@ -607,18 +541,16 @@ if ( !class_exists ( 'EE' ) )
          * @param string $url where to redirect
          * @param int $status_code status code of redirect
          */
-        public static function redirect ( $url, $status_code = 302 )
+        public static function redirect($url, $status_code = 302)
         {
-            header ( 'Location: '. $url, true, $status_code );
+            header('Location: '. $url, true, $status_code);
             exit;
         }
-
     }
 
-    spl_autoload_register ( array ( 'EE', 'autoload' ) );
+    spl_autoload_register(array('EE', 'autoload'), true);
 
-    if ( file_exists ( dirname ( __FILE__ ).'/vendor/autoload.php' ) )
-    {
-        require dirname ( __FILE__ ).'/vendor/autoload.php';
+    if (file_exists(dirname(__FILE__).'/vendor/autoload.php')) {
+        require dirname(__FILE__).'/vendor/autoload.php';
     }
 }

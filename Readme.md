@@ -69,13 +69,13 @@ All these actions are performed in index.php
 // Bootstrap file
   
 // Require main framework class
-require ( dirname ( __FILE__ ) .'/ee.php' );
+require(dirname(__FILE__).'/ee.php');
 
 // Initialize and load configs/routes
-EE::init (); 
+EE::init();
   
 // Load and execute page
-EE::load_page ();
+EE::load_page();
 ```
 
 **Global variables**
@@ -88,11 +88,11 @@ When calling load_page method it requests routing function and either returns ou
 Routes are defined with regular expressions help in app/routes.php file. Route config must point to controller and may be pointing to specific action (method). Some examples:
 
 ```php
-'/another/:num' => array ( 'controller' => 'test', 'action' => 'another' ),
-'/something' => array ( 'controller' => 'test', 'action' => 'something' ),
-'/something/:any' => array ( 'controller' => 'test', 'action' => 'something' ),
-'/custom/(.+?)-(.+?)' => array ( 'controller' => 'test', 'action' => 'custom' ),
-'/:any' => array ( 'controller' => 'test' ),
+'/another/:num' => array('controller' => 'test', 'action' => 'another'),
+'/something' => array('controller' => 'test', 'action' => 'something'),
+'/something/:any' => array('controller' => 'test', 'action' => 'something'),
+'/custom/(.+?)-(.+?)' => array('controller' => 'test', 'action' => 'custom'),
+'/:any' => array('controller' => 'test'),
 ```
 All the controller actions must have "_action" suffix.
 
@@ -108,23 +108,23 @@ All the app controllers should be on app/controllers directory. Their name and f
  */
 class test_controller
 {
-    public function __construct ()
+    public function __construct()
     {
-        $this -> model = EE::model ( 'test' );
+        //$this->model = EE::model('test');
     }
 
     /*
      * This private method is just a way to always include layout and could be completely avoided.
      */
-    private function load_view ( $page )
+    private function load_view($page)
     {
-        EE::set ( '__page', $page );
-        return EE::view ( 'layout' );
+        EE::set('__page', $page);
+        return EE::view('layout');
     }
 
-    public function index_action ( $path )
+    public function index_action($path)
     {
-        $this -> load_view ( 'index' );
+        $this -> load_view('index');
     }
 }
 ```
@@ -139,12 +139,12 @@ All the app models should be on app/models directory. Their name and file must h
  * Sample test model
  */
 class test_model
-{ 
+{
     private $pdo;
- 
+
     public function __construct ()
     {
-        $this -> pdo = db_pdo::load ( 'main' );
+        $this->pdo = db_pdo::load('main');
     }
 }
 ```
@@ -156,12 +156,12 @@ There are no other restrictions to models in general.
 By default EE uses no 3rd party templating system and emphasis PHP itself as a templating engine. Therefore with the help of [Shorttags] and [Alternative syntax for control structures] it works nice by default. Views are rendered with EE::view() method by passing file and additional variables. Also in views are extracted all the global variables.
 
 ```php
-public function foo_action ( $path )
+public function foo_action($path)
 {
-    $id = ( isset ( $path [ 0 ] ) ) ? $path [ 0 ] : null;
+    $id = (isset($path[0])) ? $path[0] : null;
 
-    EE::set ( 'id', $id );
-    return EE::view ( 'test' );
+    EE::set('id', $id);
+    return EE::view('test');
 }
 ```
 
@@ -190,8 +190,8 @@ Framework tests can be invoked via test_framework helper.
 
 There are EE::url() method which prepends base_path for every url to work correctly.
 ```php
-echo EE::url ( 'assets/image.jpg' );
-echo EE::url ( 'some-cool-action/123' );
+echo EE::url('assets/image.jpg');
+echo EE::url('some-cool-action/123');
 ```
 
 ---
