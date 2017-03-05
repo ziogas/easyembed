@@ -8,13 +8,13 @@ EasyEmbed ( EE ) is a micro framework optimized for embeding it into already cod
 Support for full MVC (models/views/controllers), autoloader, lightweight router, global variables, configuration system, database agnostic. Everything under ~500 lines of code.
 Extendable with built in plugins for session handling, translations, database access and validation.
 
-The primary objectives of EE are to ensure flexible, ligtweight/high performance and portable way to design mini-apps inside another projects. However it can be used as a stand-alone application too.
+The **primary objectives** of EE are to ensure flexible, ligtweight/high performance and **portable way to design mini-apps inside another projects**. However it can be used as a stand-alone application too.
 
 If you stuck on old project but want to have some custom functionality without digging into code or make mini-app that can be used everywhere then EE is just for you.
 
 Why
 ---
-EE is not intended to be next generation framework. However It is designed to support old (PHP < 5.3) systems where you can try new stuff and code new features unrelated to existing codebase while still keeping some relations. Although EE supports PHP >= 5.1.3 It's working well on latest PHP versions too.
+EE is not intended to be next generation framework. However It is **designed to support old (PHP < 5.3)** systems where you can try new stuff and code new features unrelated to existing codebase while still keeping some relations. Although EE supports PHP >= 5.1.3 It's working well on latest PHP versions too.
 
 If you want fully featured and also high performance PHP framework consider [Symfony 2], [Codeigniter], [Phalcon] and [XtFramework]. If you're looking for a lightweight micro framework and have decent PHP >= 5.3 support consider [Laravel] or [Silex]. They do really good job in the new PHP namespacing fashion. 
 
@@ -211,7 +211,7 @@ Installation
 
 Version
 ----
-1.0
+1.1
 
 Author
 ----
