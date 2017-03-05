@@ -25,7 +25,11 @@ $config = array(
             'dsn' => 'mysql:host=localhost;dbname=test',
             'username' => 'root',
             'password' => '',
-            'params' => array ( PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'", PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION ),
+            'params' => array(
+                // If mysqlnd isn't installed then MYSQL_ATTR_INIT_COMMAND constant might be undefined
+                1002 => "SET NAMES 'UTF8'",
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+            ),
 /*
             // Mysql setup example
             'dsn' => 'mysql:host=localhost;dbname=test',
