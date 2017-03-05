@@ -5,6 +5,9 @@ About
 ---
 EasyEmbed ( EE ) is a micro framework optimized for embeding it into already coded custom enviroments and systems.
 
+Support for full MVC (models/views/controllers), autoloader, lightweight router, global variables, configuration system, database agnostic. Everything under ~500 lines of code.
+Extendable with built in plugins for session handling, translations, database access and validation.
+
 The primary objectives of EE are to ensure flexible, ligtweight/high performance and portable way to design mini-apps inside another projects. However it can be used as a stand-alone application too.
 
 If you stuck on old project but want to have some custom functionality without digging into code or make mini-app that can be used everywhere then EE is just for you.
