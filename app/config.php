@@ -7,6 +7,7 @@
 $config = array(
     'error_level' => E_ALL,
     'log_errors' => true,
+    'display_errors' => true,
     'timezone' => 'Europe/London',
     'locale' => 'en_US',
     'session' => array(
@@ -55,7 +56,7 @@ $config = array(
 $enviroment = (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == 'localhost') ? 'dev' : 'prod';
 
 if ($enviroment == 'prod') {
-    $config['log_errors'] = true;
+    $config['display_errors'] = false;
 }
 
 return $config;

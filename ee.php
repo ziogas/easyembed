@@ -107,6 +107,11 @@ if (!class_exists('EE')) {
                 ini_set('log_errors', self::$config['log_errors']);
             }
 
+            // Define whenever to display errors
+            if (isset(self::$config['display_errors'])) {
+                ini_set('display_errors', self::$config['display_errors']);
+            }
+
             // Define timezone
             if (isset(self::$config['timezone'])) {
                 date_default_timezone_set(self::$config['timezone']);
